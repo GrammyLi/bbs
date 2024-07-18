@@ -1,0 +1,37 @@
+.top-menu {
+  &__row {
+    height: 100%;
+  }
+
+  &__left,
+  &__right {
+    .ant-menu-item {
+      &-only-child {
+        &.ant-menu-item-selected {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  &__search {
+    .ant-input-search-button {
+      background-color: #1890ff;
+      border-color: #1890ff;
+    }
+  }
+
+  &__user {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .ant-badge {
+      margin-right: 8px;
+    }
+  }
+
+  &__username {
+    margin-left: 8px;
+  }
+}

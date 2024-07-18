@@ -1,0 +1,29 @@
+__pycache__
+.DS_Store
+
+/be/.idea
+/be/venv/
+/be/test.sqlite3
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/fe/node_modules
+/fe/npm-debug.log*
+/yarn-error.log
+# /yarn.lock
+/fe/package-lock.json
+
+# production
+/fe/dist
+
+# misc
+.DS_Store
+
+# umi
+/fe/src/.umi
+/fe/src/.umi-production
+/fe/src/.umi-test
+/fe/.env.local
+
+ 
