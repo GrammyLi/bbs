@@ -1,18 +1,27 @@
 .navbar {
-  margin-bottom: 20px;
-
-  width: 100%;
-
-  // ul {
-  //   width: 100%;
-  //   display: flex;
-  //   justify-content: flex-end;
-  // }
-  .ant-menu {
-    line-height: 64px;
+  &__avatar-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
 
-  .ant-menu-item {
-    font-size: 16px;
+  &__username {
+    margin-left: 8px;
+  }
+
+  &__auth-buttons {
+    display: flex;
+    align-items: center;
+
+    .ant-btn {
+      padding: 0 8px;
+    }
+  }
+
+  &__divider {
+    width: 1px;
+    height: 24px;
+    background-color: #d9d9d9;
+    margin: 0 8px;
   }
 }

@@ -12,8 +12,10 @@ class UserService extends APIService {
     return this.post("/login", data);
   }
 
-  fetchProtectedResource(): Promise<ApiResponse<any>> {
-    return this.get("/protected");
+  profile(user_id: number): Promise<ApiResponse<any>> {
+    return this.get("/profile", {
+      user_id,
+    });
   }
 }
 

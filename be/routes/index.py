@@ -49,52 +49,33 @@ def register():
     # 用类函数来判断
     u = User.register(form)
     if u is None:
-        flash('注册失败，用户名已注册或者用户名小于三位')
-        return redirect(url_for('.index'))
-    flash('注册成功')
-    return redirect(url_for('.index'))
+        return jsonify({'msg': '注册失败', "code": 201, "data": "null",  })
+    return jsonify({'msg': '注册成功', "code": 200, "data": u.to_dict(),  })
 
 
 @main.route("/login", methods=['POST'])
 def login():
-    # form = request.form
     form = request.get_json()
-    print("form", form)
+    # print("form", form)
     u = User.validate_login(form)
-    print('login user <{}>'.format(u))
+    # print('login user <{}>'.format(u))
     if u is None:
-        # 转到 topic.index 页面
-        # flash('用户名或密码错误')
         return jsonify({'msg': '登录失败', "code": 201, })
-        # return redirect(url_for('.index'))
     else:
-        # session 中写入 user_id
         session['user_id'] = u.id
-        # 设置 cookie 有效期为 永久
         session.permanent = True  # 设置 session 为永久
         token = create_access_token(identity=u.id)
         signature = token[:50];
         User.update(u.id,  signature=signature)
-        # signature
         return jsonify({'msg': '登录成功', "code": 200, "data": u.to_dict(),  "token": str(token)})
-        # response = make_response(jsonify({'msg': '登录成功', "code": 200, "data": u.to_dict(),  "token": str(token)}))
-        # response.set_cookie('user_id', str(u.id), max_age=60*60*24*30)  # 设置 Cookie 有效期为 30 天
-        # # u = current_user()
-        # print("u", u)
 
-
-@main.route("/protected", methods=['GET'])
-@jwt_required()
-def protected():
-    user_id = get_jwt_identity()
-    print("user_id", user_id)
-    return jsonify({'msg': '已登录', 'user_id': user_id})
 
 @main.route('/profile')
 def profile():
-    u = current_user()
+    id = request.args.get('user_id', -1)
+    u = User.one(id=id)
     if u is None:
-        return redirect(url_for('.index'))
+        return jsonify({'msg': '', "code": 200, "data": None,  })
     else:
-        return render_template('profile.html', user=u)
+        return jsonify({'msg': '', "code": 200, "data": u.to_dict(),  })
 
