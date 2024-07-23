@@ -1,3 +1,5 @@
+from helpers.http_helper import HTTPHelper
+from helpers.errcode import ErrCode
 from flask import (
     render_template,
     request,
@@ -21,7 +23,11 @@ def index():
     print("bs", bs)
     # 将每个 Board 实例转换为字典
     data = [b.to_dict() for b in bs]
-    return jsonify({'msg': '成功', "code": 200, "data": data})
+    return HTTPHelper.generate_response(
+        code=ErrCode.ERROR_SUCCESS,
+        msg='获取成功',
+        data=data
+    )
 
 
 @main.route("/add", methods=["POST"])
