@@ -19,8 +19,8 @@ const Topics: React.FC<{ boardId: number }> = ({ boardId }) => {
     try {
       const res = await topicService.getTopics(boardId);
       if (res.code === 200) {
-        setTopics(res.data);
-        // setTotal(res.data.total);
+        setTopics(res.data.topics);
+        setTotal(res.data.total);
       } else {
         message.error(res.msg);
       }
@@ -66,15 +66,17 @@ const Topics: React.FC<{ boardId: number }> = ({ boardId }) => {
               <List.Item.Meta
                 avatar={
                   <Avatar
-                    src={topic?.user_avatar || "https://via.placeholder.com/50"}
-                  />
+                    style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}
+                  >
+                    {topic.username[0]}
+                  </Avatar>
                 }
                 title={<a href={`#/topic/${topic.id}`}>{topic.title}</a>}
                 description={
                   <>
                     <div className="content-single-line">{topic.content}</div>
                     <div className="topic-info">
-                      <span>{topic?.user_name || "名称"}</span>
+                      <span> 名称: {topic.username}</span>
                       <span>发布于 {formatTime(topic.created_time)}</span>
                     </div>
                   </>

@@ -49,7 +49,7 @@ const Navbar: React.FC<{
       >
         <Tabs.TabPane tab={<Link to="/">首页</Link>} key="home" />
         <Tabs.TabPane
-          tab={<Link to="/addTopic">addTopic</Link>}
+          tab={<Link to="/addTopic">发布话题</Link>}
           key="addTopic"
         />
       </Tabs>

@@ -22,25 +22,38 @@ main = Blueprint('topic', __name__)
 # TODO:  话题全部列表缓存
 # cache = redis.StrictRedis()
 
-@main.route("/all")
+def get_topic_with_username(topic):
+    topic_dict = topic.to_dict()
+    user = topic.user()
+    topic_dict['username'] = user.username if user else 'Unknown'
+    return topic_dict
+
+
+@main.route('/all')
 def index():
     board_id = int(request.args.get('board_id', -1))
     if board_id == -1:
-        ms = Topic.all()
+        topics = Topic.all()
     else:
-        ms = Topic.all(board_id=board_id)
-    ms = sorted(ms, key=lambda m: m.created_time, reverse=True)
-    ms_dict = [m.to_dict() for m in ms]  # 对每个Topic对象进行to_dict转换
+        topics = Topic.all(board_id=board_id)
+    
+    total = len(topics)
+    topics_dict = [get_topic_with_username(topic) for topic in topics]
+    topics_dict = sorted(topics_dict, key=lambda t: t['created_time'], reverse=True)
 
-    return jsonify({'msg': '话题列表获取成功', "code": 200, "data": ms_dict})
+    return jsonify({'msg': '话题列表获取成功', "code": 200, "data": {'total': total, 'topics': topics_dict}})
 
 
 @main.route('/detail')
 def detail():
     id = request.args.get('topic_id', -1)
-    m = Topic.get(id)
-    return jsonify({'msg': '话题获取成功', "code": 200, "data": m.to_dict()})
-
+    topic = Topic.get(id)
+    if topic:
+        topic_dict = get_topic_with_username(topic)
+        return jsonify({'msg': '话题获取成功', "code": 200, "data": topic_dict})
+    else:
+        return jsonify({'msg': '话题不存在', "code": 404, "data": {}})
+    
 
 @main.route("/add", methods=["POST"])
 def add():
@@ -50,11 +63,4 @@ def add():
     m = Topic.new(form, user_id=u.id)
     return jsonify({'msg': '话题获取成功', "code": 200, "data": m.to_dict()})
 
-
-@main.route("/new")
-def new():
-    board_id = int(request.args.get('board_id', '-1'))
-    bs = Board.all()
-    token = new_csrf_token()
-    pass
 

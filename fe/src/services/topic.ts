@@ -6,7 +6,12 @@ class ToppicService extends APIService {
     super();
   }
 
-  getTopics(board_id: number): Promise<ApiResponse<Topic[]>> {
+  getTopics(board_id: number): Promise<
+    ApiResponse<{
+      topics: Topic[];
+      total: number;
+    }>
+  > {
     return this.get("/topic/all", { board_id });
   }
 

@@ -14,69 +14,27 @@ from models.user import User
 
 main = Blueprint('reply', __name__)
 
-
-def users_from_content(content):
-    # 内容 @123 内容
-    # 如果用户名含有空格 就不行了 @name 123
-    # 'a b c' -> ['a', 'b', 'c']
-    parts = content.split()
-    users = []
-
-    for p in parts:
-        if p.startswith('@'):
-            username = p[1:]
-            u = User.one(username=username)
-            print('users_from_content <{}> <{}> <{}>'.format(username, p, parts))
-            if u is not None:
-                users.append(u)
-
-    return users
-
-
-def send_mails(sender, receivers, reply_link, reply_content):
-    print('send_mail', sender, receivers, reply_content)
-    content = '链接：{}\n内容：{}'.format(
-        reply_link,
-        reply_content
-    )
-    for r in receivers:
-        form = dict(
-            title='你被 {} AT 了'.format(sender.username),
-            content=content,
-            sender_username=sender.username,
-            receiver_username=r.username
-        )
-        # Messages.new(form)
-
+def get_reply_with_username(reply):
+    reply_dict = reply.to_dict()
+    user = reply.user()
+    reply_dict['username'] = user.username if user else 'Unknown'
+    return reply_dict
 
 @main.route("/add", methods=["POST"])
 def add():
-    # form = request.form
-    # u = current_user()
-
-    # content = form['content']
-    # users = users_from_content(content)
-    # send_mails(u, users, request.referrer, content)
-
-    # form = form.to_dict()
-    # m = Reply.new(form, user_id=u.id)
-    # return redirect(url_for('topic.detail', id=m.topic_id))
     form = request.get_json()
-    print("form", form)
     u = current_user()
-    print("u", u)
     m = Reply.new(form, user_id=u.id)
     return jsonify({'msg': '成功', "code": 200, "data": m.to_dict()})
+
 
 
 @main.route("/all")
 def all():
     id = request.args.get('topic_id', -1)
     replys = Reply.all(topic_id=id)
-
-    ms = sorted(replys, key=lambda m: m.created_time, reverse=True)
-    ms_dict = [m.to_dict() for m in ms]  # 对每个Topic对象进行to_dict转换
-
-    return jsonify({'msg': '回复获取成功', "code": 200, "data": ms_dict})
+    replys_dict = [get_reply_with_username(reply) for reply in replys]
+    replys_dict = sorted(replys_dict, key=lambda r: r['created_time'], reverse=True)
+    return jsonify({'msg': '回复获取成功', "code": 200, "data": replys_dict})
 
    

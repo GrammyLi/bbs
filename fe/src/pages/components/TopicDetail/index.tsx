@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Spin, message, Avatar } from "antd";
-import topicService from "@/services/topic"; // 确保路径正确
-import { Topic } from "@/services/type/topic";
-
-import ReactMarkdown from "react-markdown";
-import "./index.less";
 import { useParams } from "umi";
+import ReactMarkdown from "react-markdown";
+
+import topicService from "@/services/topic"; // 确保路径正确
+
 import Comments from "../Comments";
+import "./index.less";
 
 const TopicDetail = () => {
   const { id: topicId } = useParams<{
@@ -15,6 +15,7 @@ const TopicDetail = () => {
   const [topicDetail, settopicDetail] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   console.log("topicId", topicId);
+
   useEffect(() => {
     topicId && fetchtopicDetail(Number(topicId));
   }, [topicId]);
@@ -41,10 +42,12 @@ const TopicDetail = () => {
         <div className="topic-detail-container">
           <div className="topic-header">
             <div className="topic-title">{topicDetail.title}</div>
-            <div className="topic-subtitle">{topicDetail.subtitle}</div>
+            {/* <div className="topic-subtitle">{topicDetail.subtitle}</div> */}
             <div className="topic-meta">
-              <Avatar src={topicDetail.user_avatar} />
-              <span className="topic-author">{topicDetail.user_name}</span>
+              <Avatar style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}>
+                {topicDetail.username[0]}
+              </Avatar>
+              <span className="topic-author">{topicDetail.username}</span>
               <span className="topic-views">{topicDetail.views} 阅读</span>
               <span className="topic-comments">
                 {topicDetail.comments} 评论

@@ -38,14 +38,5 @@ class User(SQLMixin, db.Model):
         print('validate_login', form, query)
         return User.one(**query)
     
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-            'email': self.email,
-            'image': self.image,
-            'signature': self.signature,
-            'created_time': self.created_time,
-            'updated_time': self.updated_time,
-        }
+ 
    

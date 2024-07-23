@@ -19,7 +19,7 @@ const HotTopics: React.FC = () => {
     try {
       const res = await topicService.getTopics(-1);
       if (res.code === 200) {
-        setTopics(res.data);
+        setTopics(res.data.topics);
         // setTotal(res.data.total);
       } else {
         message.error(res.msg);

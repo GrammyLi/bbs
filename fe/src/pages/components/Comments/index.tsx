@@ -81,11 +81,11 @@ const Comments: React.FC<{ topicId: number }> = ({ topicId }) => {
   return (
     <div className="comments-container">
       <div className="comments-header">
-        精选评论
-        <div className="comments-actions">
+        话题评论
+        {/* <div className="comments-actions">
           <Button type="link">按热度</Button>
           <Button type="link">按时间</Button>
-        </div>
+        </div> */}
       </div>
       <Spin spinning={loading}>
         <List
@@ -96,18 +96,18 @@ const Comments: React.FC<{ topicId: number }> = ({ topicId }) => {
               <List.Item.Meta
                 avatar={
                   <Avatar
-                    src={
-                      comment?.user_avatar || "https://via.placeholder.com/50"
-                    }
-                  />
+                    style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}
+                  >
+                    {comment.username[0]}
+                  </Avatar>
                 }
                 title={
-                  <span className="comment-author">{comment?.user_name}</span>
+                  <span className="comment-author">{comment?.username}</span>
                 }
                 description={
-                  <span className="comment-time">
+                  <div style={{ width: 500 }}>
                     {formatTime(comment.created_time)}
-                  </span>
+                  </div>
                 }
               />
               <ReactMarkdown className="comment-content">
