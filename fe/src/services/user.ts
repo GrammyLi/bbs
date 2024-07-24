@@ -12,10 +12,8 @@ class UserService extends APIService {
     return this.post("/login", data);
   }
 
-  profile(user_id: number): Promise<ApiResponse<any>> {
-    return this.get("/profile", {
-      user_id,
-    });
+  profile(): Promise<ApiResponse<any>> {
+    return this.get("/profile", {});
   }
 }
 

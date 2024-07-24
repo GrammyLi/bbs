@@ -1,13 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "umi";
 import { Tabs, Button, Avatar, Dropdown, Menu } from "antd";
+
 import "./index.less";
 
-const Navbar: React.FC<{
-  isLoggedIn: boolean;
-  userAvatar?: string;
-  userName?: string;
-}> = ({ isLoggedIn, userAvatar, userName }) => {
+const Navbar: React.FC = () => {
+  const { isLogin, userInfo } = {};
   const location = useLocation();
   const selectedKey = location.pathname.split("/")[1] || "home"; // 获取当前路径的第一级路径，如果没有则默认为 home
 
@@ -27,11 +25,11 @@ const Navbar: React.FC<{
       <Tabs
         activeKey={selectedKey}
         tabBarExtraContent={
-          isLoggedIn ? (
+          isLogin ? (
             <Dropdown overlay={menu}>
               <div className="navbar__avatar-container">
-                <Avatar src={userAvatar} />
-                <span className="navbar__username">{userName}</span>
+                <Avatar>{userInfo?.username?.[0]}</Avatar>
+                <span className="navbar__username">{userInfo?.username}</span>
               </div>
             </Dropdown>
           ) : (
@@ -53,7 +51,6 @@ const Navbar: React.FC<{
           key="addTopic"
         />
       </Tabs>
-      
     </div>
   );
 };
