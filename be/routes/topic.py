@@ -32,16 +32,15 @@ def get_topic_with_username(topic):
 @main.route('/all')
 def index():
     board_id = int(request.args.get('board_id', -1))
+    pg = int(request.args.get('pg', 1))  # 默认第1页
+    sz = int(request.args.get('sz', 10))  # 默认每页10条记录
     if board_id == -1:
-        topics = Topic.all()
+        total, topics = Topic.paginate(pg, sz)
     else:
-        topics = Topic.all(board_id=board_id)
-    
-    total = len(topics)
+        total, topics = Topic.paginate(pg, sz, board_id=board_id)
     topics_dict = [get_topic_with_username(topic) for topic in topics]
-    topics_dict = sorted(topics_dict, key=lambda t: t['created_time'], reverse=True)
-
     return jsonify({'msg': '话题列表获取成功', "code": 200, "data": {'total': total, 'topics': topics_dict}})
+
 
 
 @main.route('/detail')

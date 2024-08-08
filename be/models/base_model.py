@@ -74,4 +74,11 @@ class SQLMixin(object):
         db.session.add(self)
         db.session.commit()
 
+    @classmethod
+    def paginate(cls, page, size, **kwargs):
+        query = cls.query.filter_by(**kwargs)
+        total = query.count()
+        items = query.order_by(cls.created_time.desc()).offset((page - 1) * size).limit(size).all()
+        return total, items
+
  
