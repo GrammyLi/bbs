@@ -1,11 +1,24 @@
 import React from "react";
 import { Link, useLocation } from "umi";
 import { Tabs, Button, Avatar, Dropdown, Menu } from "antd";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "@/store/slices/userSlice";
 import "./index.less";
 
 const Navbar: React.FC = () => {
-  const { isLogin, userInfo } = {};
+  const user = useSelector((state: any) => state.user);
+  console.log("user", user);
+  const dispatch = useDispatch();
+
+  const updateUser = () => {
+    dispatch(setUser({ name: "John Doe", age: 30 }));
+  };
+  const { isLogin, userInfo } = {
+    isLogin: true,
+    userInfo: {
+      username: "grammyli",
+    },
+  };
   const location = useLocation();
   const selectedKey = location.pathname.split("/")[1] || "home"; // 获取当前路径的第一级路径，如果没有则默认为 home
 

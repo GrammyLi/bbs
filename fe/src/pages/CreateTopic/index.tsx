@@ -6,9 +6,9 @@ import "react-markdown-editor-lite/lib/index.css";
 import boardService from "@/services/board";
 import topicService from "@/services/topic";
 import { Board } from "@/services/type/board";
-import BoardsSelect from "@/components/BoardsSelect";
 
 import "./index.less";
+import BoardsSelect from "../components/BoardsSelect";
 
 const { TextArea } = Input;
 

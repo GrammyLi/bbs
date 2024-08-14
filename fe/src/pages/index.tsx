@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import Boards from "@/components/Boards";
-import Topics from "@/components/Topics";
-import AuthModal from "@/components/AuthModal";
-import ActionButtons from "@/components/ActionButtons";
-import HotTopics from "@/components/HotTopics";
-
 import "./index.less";
+import Boards from "./components/Boards";
+import Topics from "./components/Topics";
+import ActionButtons from "./components/ActionButtons";
+import HotTopics from "./components/HotTopics";
 const IndexPage: React.FC = () => {
   const [boardId, setBoardId] = useState<number>(-1);
   // const [isAddBoardVisible, setIsAddBoardVisible] = useState(false);
@@ -49,7 +47,7 @@ const IndexPage: React.FC = () => {
           <HotTopics />
         </div>
       </div>
-      <AuthModal visible={isModalVisible} onClose={handleCancel} />
+      {/* <AuthModal visible={isModalVisible} onClose={handleCancel} /> */}
       {/* <AddBoardModal
         visible={isAddBoardVisible}
         onClose={handleAddBoardCancel}
