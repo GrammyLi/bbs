@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "umi";
+import { history } from "umi";
+
 import { Tabs, Button, Avatar, Dropdown, Menu } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "@/store/slices/userSlice";
@@ -7,20 +9,17 @@ import "./index.less";
 
 const Navbar: React.FC = () => {
   const user = useSelector((state: any) => state.user);
-  console.log("user", user);
-  const dispatch = useDispatch();
-
-  const updateUser = () => {
-    dispatch(setUser({ name: "John Doe", age: 30 }));
-  };
-  const { isLogin, userInfo } = {
-    isLogin: true,
-    userInfo: {
-      username: "grammyli",
-    },
-  };
   const location = useLocation();
-  const selectedKey = location.pathname.split("/")[1] || "home"; // 获取当前路径的第一级路径，如果没有则默认为 home
+
+  const [selectedKey, setSelectedKey] = useState<string>(
+    location.pathname.split("/")[1] || "home"
+  ); // 获取当前路径的第一级路径，如果没有则默认为 home
+
+  const handleTabChange = (key: string) => {
+    setSelectedKey(key);
+
+    history.push(`/${key === "home" ? "" : key}`);
+  };
 
   const menu = (
     <Menu>
@@ -37,12 +36,13 @@ const Navbar: React.FC = () => {
     <div className="navbar">
       <Tabs
         activeKey={selectedKey}
+        onChange={handleTabChange}
         tabBarExtraContent={
-          isLogin ? (
+          user?.id ? (
             <Dropdown overlay={menu}>
               <div className="navbar__avatar-container">
-                <Avatar>{userInfo?.username?.[0]}</Avatar>
-                <span className="navbar__username">{userInfo?.username}</span>
+                <Avatar>{user?.name?.[0]}</Avatar>
+                <span className="navbar__username">{user?.name}</span>
               </div>
             </Dropdown>
           ) : (
@@ -58,11 +58,8 @@ const Navbar: React.FC = () => {
           )
         }
       >
-        <Tabs.TabPane tab={<Link to="/">首页</Link>} key="home" />
-        <Tabs.TabPane
-          tab={<Link to="/addTopic">发布话题</Link>}
-          key="addTopic"
-        />
+        <Tabs.TabPane tab={"首页"} key="home" />
+        <Tabs.TabPane tab={"发布话题"} key="addTopic" />
       </Tabs>
     </div>
   );

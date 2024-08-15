@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import userService from "@/services/user"; // 确保路径正确
 
 import "./index.less";
 import Boards from "./components/Boards";
 import Topics from "./components/Topics";
 import ActionButtons from "./components/ActionButtons";
 import HotTopics from "./components/HotTopics";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/store/slices/userSlice";
 const IndexPage: React.FC = () => {
   const [boardId, setBoardId] = useState<number>(-1);
   // const [isAddBoardVisible, setIsAddBoardVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const dispatch = useDispatch();
 
+  const updateUser = () => {};
   // const showAddBoardModal = () => {
   //   setIsAddBoardVisible(true);
   // };
@@ -17,6 +22,21 @@ const IndexPage: React.FC = () => {
   // const handleAddBoardCancel = () => {
   //   setIsAddBoardVisible(false);
   // };
+
+  useEffect(() => {
+    // 这里判断用户是否登录
+
+    userService.profile().then((res: any) => {
+      console.log("res", res);
+      if (res.code === 200) {
+        const { name, id, email } = res.data;
+
+        dispatch(setUser({ name, id, email }));
+      }
+
+      // 如果登录就存信息
+    });
+  }, []);
 
   const handleAddBoardSubmit = (title: string) => {
     console.log("板块标题:", title);

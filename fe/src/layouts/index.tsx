@@ -4,6 +4,7 @@ import { ConfigProvider } from "antd";
 import zhCN from "antd/es/locale/zh_CN";
 import "./index.less";
 import Navbar from "@/components/Navbar";
+import FooterComponent from "@/components/GFooter";
 
 const Layout: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const Layout: React.FC = () => {
       <div className="navs">
         <Navbar />
         <Outlet />
+        <FooterComponent />
       </div>
     </ConfigProvider>
   );

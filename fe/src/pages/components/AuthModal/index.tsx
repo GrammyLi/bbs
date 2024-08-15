@@ -25,6 +25,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ visible, onClose }) => {
       .then((res: any) => {
         localStorage.token = res?.token || "";
       });
+      
     // await userService.fetchProtectedResource(); // 获取受保护资源
 
     onClose();

@@ -31,11 +31,18 @@ main = Blueprint('index', __name__)
 @main.route("/register", methods=['POST'])
 def register():
     form = request.form.to_dict()
-    # 用类函数来判断
+    log("form", form)
     u = User.register(form)
     if u is None:
-        return jsonify({'msg': '注册失败', "code": 201, "data": "null",  })
-    return jsonify({'msg': '注册成功', "code": 200, "data": u.to_dict(),  })
+        return HTTPHelper.generate_response(
+            code=ErrCode.ERROR_USER_NOT_EXISTS,
+            msg='注册失败',
+        )
+    return HTTPHelper.generate_response(
+        code=ErrCode.ERROR_SUCCESS,
+        msg='成功',
+        data=u.to_dict()
+    )
 
 
 @main.route("/login", methods=['POST'])
@@ -61,9 +68,15 @@ def login():
 @main.route('/profile')
 def profile():
     u = current_user()
+    current = {
+        "name": u.username,
+        "id": u.id,
+        "email": u.email,
+        "avatar": u.image,
+    }
     return HTTPHelper.generate_response(
         code=ErrCode.ERROR_SUCCESS,
         msg='获取用户信息成功',
-        data=u.to_dict()
+        data=current
     )
 
