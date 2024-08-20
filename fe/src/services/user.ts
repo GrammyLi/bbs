@@ -15,6 +15,10 @@ class UserService extends APIService {
   profile(): Promise<ApiResponse<any>> {
     return this.get("/profile", {});
   }
+
+  update(data: { username: string; email: string }): Promise<ApiResponse<any>> {
+    return this.post("/update", data);
+  }
 }
 
 export default new UserService();

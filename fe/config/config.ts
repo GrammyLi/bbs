@@ -4,6 +4,8 @@ export default defineConfig({
   routes: [
     { path: "/", component: "@/pages/index" },
     { path: "/addTopic", component: "@/pages/CreateTopic" },
+    { path: "/settings", component: "@/pages/Settings" },
+
     { path: "/topic/:id", component: "@/pages/Topic" },
   ],
   alias: {

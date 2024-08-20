@@ -80,3 +80,20 @@ def profile():
         data=current
     )
 
+@main.route("/update", methods=['POST'])
+def update():
+    form = request.get_json()
+    u = current_user()
+    # 这有你当前用户才能更新自己的信息
+    if u.id == form['id']:
+        User.update(form)
+        return HTTPHelper.generate_response(
+            code=ErrCode.ERROR_SUCCESS,
+            msg='更新成功',
+        )
+    else:
+        return HTTPHelper.generate_response(
+            code=ErrCode.ERROR_USER_NOT_EXISTS,
+            msg='更新失败',
+        )
+ 

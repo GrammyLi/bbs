@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Spin, message, Button, Input } from "antd";
+import { List, Avatar, Spin, message, Button, Input, Tag } from "antd";
 import ReplyService from "@/services/reply"; // 确保路径正确
 
 import ReactMarkdown from "react-markdown";
 import "./index.less";
 import { Reply } from "@/services/type/reply";
+import { useSelector } from "react-redux";
 const { TextArea } = Input;
 
 const Comments: React.FC<{ topicId: number }> = ({ topicId }) => {
+  const user = useSelector((state: any) => state.user);
+  console.log("user", user);
+
   const [comments, setComments] = useState<Reply[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [newComment, setNewComment] = useState<string>("");
+  console.log("comments", comments);
 
   useEffect(() => {
     topicId && fetchComments(topicId);
@@ -102,7 +107,11 @@ const Comments: React.FC<{ topicId: number }> = ({ topicId }) => {
                   </Avatar>
                 }
                 title={
-                  <span className="comment-author">{comment?.username}</span>
+                  <>
+                    <span className="comment-author">{comment?.username}</span>
+
+                    {user?.id === comment?.user_id && <Tag> 自己</Tag>}
+                  </>
                 }
                 description={
                   <div style={{ width: 500 }}>
